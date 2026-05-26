@@ -220,6 +220,148 @@
 //   );
 // }
 
+// import { useState } from 'react';
+// import './styles/global.css';
+// import { AuthProvider, useAuth } from './context/AuthContext';
+// import LoginPage        from './pages/LoginPage';
+// import RemoveDuplicates from './pages/RemoveDuplicates';
+// import UrlCleaner       from './pages/UrlCleaner';
+// import ExtractEmails    from './pages/ExtractEmails';
+// import ShuffleEmails    from './pages/ShuffleEmails';
+// import EmailSender      from './pages/EmailSender';
+// import AdminPanel       from './pages/AdminPanel';
+
+// const USER_TABS = [
+//   { id: 'dedup',    label: 'Remove Duplicates', icon: '🧹', num: '01' },
+//   { id: 'urlclean', label: 'URL Cleaner',        icon: '🔗', num: '02' },
+//   { id: 'extract',  label: 'Extract Emails',     icon: '🔎', num: '03' },
+//   { id: 'shuffle',  label: 'Shuffle Emails',     icon: '🔀', num: '04' },
+//   { id: 'sender',   label: 'Bulk Sender',        icon: '📤', num: '05' },
+// ];
+
+// const ADMIN_TAB = { id: 'admin', label: 'Admin Panel', icon: '⚙', num: '06' };
+
+// function MainApp() {
+//   const { user, logout, loading } = useAuth();
+//   const [activeTab, setActiveTab]     = useState('dedup');
+//   const [showUserMenu, setShowUserMenu] = useState(false);
+
+//   if (loading) return (
+//     <div style={{ minHeight: '100vh', background: 'var(--bg-primary)',
+//       display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+//       <div className="spinner-wrap">
+//         <div className="spinner" />
+//         <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+//           Verifying session...
+//         </span>
+//       </div>
+//     </div>
+//   );
+
+//   if (!user) return <LoginPage />;
+
+//   const isAdmin = user.role === 'admin';
+//   const TABS = isAdmin ? [...USER_TABS, ADMIN_TAB] : USER_TABS;
+
+//   const renderPage = () => {
+//     switch (activeTab) {
+//       case 'dedup':    return <RemoveDuplicates />;
+//       case 'urlclean': return <UrlCleaner />;
+//       case 'extract':  return <ExtractEmails />;
+//       case 'shuffle':  return <ShuffleEmails />;
+//       case 'sender':   return <EmailSender />;
+//       case 'admin':    return isAdmin ? <AdminPanel /> : <RemoveDuplicates />;
+//       default:         return <RemoveDuplicates />;
+//     }
+//   };
+
+//   return (
+//     <div className="app-wrapper">
+//       <header className="app-header">
+//         <div className="header-logo">
+//           <div className="logo-icon">📧</div>
+//           <div className="logo-text">Email<span>Tools</span> Pro</div>
+//         </div>
+
+//         <div style={{ position: 'relative' }}>
+//           <button onClick={() => setShowUserMenu(s => !s)}
+//             style={{ display: 'flex', alignItems: 'center', gap: '0.5rem',
+//               background: 'var(--bg-card)', border: '1px solid var(--border)',
+//               borderRadius: '8px', padding: '0.4rem 0.8rem', cursor: 'pointer',
+//               color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)', fontSize: '0.72rem' }}>
+//             {isAdmin
+//               ? <span style={{ color: '#a78bfa' }}>⚙</span>
+//               : <span style={{ color: 'var(--accent-cyan)' }}>●</span>}
+//             {user.email}
+//             {isAdmin && <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: '#a78bfa',
+//               background: 'rgba(124,58,237,0.15)', padding: '0.1rem 0.35rem', borderRadius: '10px' }}>ADMIN</span>}
+//             <span style={{ color: 'var(--text-muted)' }}>▾</span>
+//           </button>
+
+//           {showUserMenu && (
+//             <>
+//               <div style={{ position: 'fixed', inset: 0, zIndex: 99 }} onClick={() => setShowUserMenu(false)} />
+//               <div style={{ position: 'absolute', top: 'calc(100% + 8px)', right: 0, zIndex: 100,
+//                 background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '10px',
+//                 minWidth: '210px', overflow: 'hidden', boxShadow: '0 8px 30px rgba(0,0,0,0.3)' }}>
+//                 <div style={{ padding: '0.75rem 1rem', borderBottom: '1px solid var(--border)',
+//                   fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)' }}>
+//                   Signed in as<br />
+//                   <span style={{ color: 'var(--text-primary)', fontSize: '0.75rem' }}>{user.email}</span><br />
+//                   <span style={{ color: isAdmin ? '#a78bfa' : 'var(--text-muted)', fontSize: '0.65rem' }}>
+//                     {isAdmin ? '⚙ Administrator' : '● User'}
+//                   </span>
+//                 </div>
+//                 {isAdmin && (
+//                   <button onClick={() => { setShowUserMenu(false); setActiveTab('admin'); }}
+//                     style={{ width: '100%', padding: '0.65rem 1rem', background: 'none', border: 'none',
+//                       color: '#a78bfa', cursor: 'pointer', textAlign: 'left',
+//                       fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>
+//                     ⚙ Admin Panel
+//                   </button>
+//                 )}
+//                 <button onClick={() => { setShowUserMenu(false); logout(); }}
+//                   style={{ width: '100%', padding: '0.65rem 1rem', background: 'none', border: 'none',
+//                     color: 'var(--danger)', cursor: 'pointer', textAlign: 'left',
+//                     fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>
+//                   ⎋ Sign Out
+//                 </button>
+//               </div>
+//             </>
+//           )}
+//         </div>
+//       </header>
+
+//       <nav className="nav-container">
+//         <div className="nav-tabs">
+//           {TABS.map(tab => (
+//             <button key={tab.id}
+//               className={`nav-tab ${activeTab === tab.id ? 'active' : ''}`}
+//               style={tab.id === 'admin' ? { color: activeTab === 'admin' ? '#a78bfa' : 'var(--text-muted)',
+//                 borderBottomColor: activeTab === 'admin' ? '#a78bfa' : 'transparent' } : {}}
+//               onClick={() => setActiveTab(tab.id)}>
+//               <span className="tab-num">{tab.num}</span>
+//               <span>{tab.icon}</span>
+//               <span>{tab.label}</span>
+//             </button>
+//           ))}
+//         </div>
+//       </nav>
+
+//       <main className="main-content">{renderPage()}</main>
+
+//       <footer className="app-footer">
+//         EmailTools Pro · {user.email} · {isAdmin ? 'Administrator' : 'User'}
+//       </footer>
+//     </div>
+//   );
+// }
+
+// export default function App() {
+//   return <AuthProvider><MainApp /></AuthProvider>;
+// }
+
+
 import { useState } from 'react';
 import './styles/global.css';
 import { AuthProvider, useAuth } from './context/AuthContext';
@@ -232,14 +374,13 @@ import EmailSender      from './pages/EmailSender';
 import AdminPanel       from './pages/AdminPanel';
 
 const USER_TABS = [
-  { id: 'dedup',    label: 'Remove Duplicates', icon: '🧹', num: '01' },
-  { id: 'urlclean', label: 'URL Cleaner',        icon: '🔗', num: '02' },
-  { id: 'extract',  label: 'Extract Emails',     icon: '🔎', num: '03' },
-  { id: 'shuffle',  label: 'Shuffle Emails',     icon: '🔀', num: '04' },
-  { id: 'sender',   label: 'Bulk Sender',        icon: '📤', num: '05' },
+  { id: 'dedup',    label: 'Duplicates', icon: '🧹', num: '01' },
+  { id: 'urlclean', label: 'URL Clean',  icon: '🔗', num: '02' },
+  { id: 'extract',  label: 'Extract',    icon: '🔎', num: '03' },
+  { id: 'shuffle',  label: 'Shuffle',    icon: '🔀', num: '04' },
+  { id: 'sender',   label: 'Sender',     icon: '📤', num: '05' },
 ];
-
-const ADMIN_TAB = { id: 'admin', label: 'Admin Panel', icon: '⚙', num: '06' };
+const ADMIN_TAB = { id: 'admin', label: 'Admin', icon: '⚙', num: '06' };
 
 function MainApp() {
   const { user, logout, loading } = useAuth();
@@ -247,11 +388,11 @@ function MainApp() {
   const [showUserMenu, setShowUserMenu] = useState(false);
 
   if (loading) return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg-primary)',
-      display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    <div style={{ minHeight:'100vh', background:'var(--bg-primary)',
+      display:'flex', alignItems:'center', justifyContent:'center' }}>
       <div className="spinner-wrap">
         <div className="spinner" />
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+        <span style={{ fontFamily:'var(--font-mono)', fontSize:'0.8rem', color:'var(--text-muted)' }}>
           Verifying session...
         </span>
       </div>
@@ -277,53 +418,58 @@ function MainApp() {
 
   return (
     <div className="app-wrapper">
+      {/* ── Header ── */}
       <header className="app-header">
         <div className="header-logo">
           <div className="logo-icon">📧</div>
           <div className="logo-text">Email<span>Tools</span> Pro</div>
         </div>
 
-        <div style={{ position: 'relative' }}>
-          <button onClick={() => setShowUserMenu(s => !s)}
-            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem',
-              background: 'var(--bg-card)', border: '1px solid var(--border)',
-              borderRadius: '8px', padding: '0.4rem 0.8rem', cursor: 'pointer',
-              color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)', fontSize: '0.72rem' }}>
-            {isAdmin
-              ? <span style={{ color: '#a78bfa' }}>⚙</span>
-              : <span style={{ color: 'var(--accent-cyan)' }}>●</span>}
-            {user.email}
-            {isAdmin && <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: '#a78bfa',
-              background: 'rgba(124,58,237,0.15)', padding: '0.1rem 0.35rem', borderRadius: '10px' }}>ADMIN</span>}
-            <span style={{ color: 'var(--text-muted)' }}>▾</span>
+        <div className="header-badge">v4.0 · MERN</div>
+
+        {/* User menu */}
+        <div style={{ position:'relative', flexShrink: 0 }}>
+          <button
+            className="header-user-btn"
+            onClick={() => setShowUserMenu(s => !s)}
+            aria-label="User menu"
+            aria-expanded={showUserMenu}
+          >
+            <span style={{ color: isAdmin ? '#a78bfa' : 'var(--accent-cyan)', flexShrink: 0 }}>
+              {isAdmin ? '⚙' : '●'}
+            </span>
+            <span className="header-user-email">{user.email}</span>
+            {isAdmin && (
+              <span style={{ fontFamily:'var(--font-mono)', fontSize:'0.55rem', color:'#a78bfa',
+                background:'rgba(124,58,237,0.15)', padding:'0.1rem 0.35rem',
+                borderRadius:'10px', flexShrink: 0 }}>
+                ADMIN
+              </span>
+            )}
+            <span style={{ color:'var(--text-muted)', flexShrink: 0 }}>▾</span>
           </button>
 
           {showUserMenu && (
             <>
-              <div style={{ position: 'fixed', inset: 0, zIndex: 99 }} onClick={() => setShowUserMenu(false)} />
-              <div style={{ position: 'absolute', top: 'calc(100% + 8px)', right: 0, zIndex: 100,
-                background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '10px',
-                minWidth: '210px', overflow: 'hidden', boxShadow: '0 8px 30px rgba(0,0,0,0.3)' }}>
-                <div style={{ padding: '0.75rem 1rem', borderBottom: '1px solid var(--border)',
-                  fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)' }}>
+              <div style={{ position:'fixed', inset:0, zIndex:199 }}
+                onClick={() => setShowUserMenu(false)} />
+              <div className="header-user-menu">
+                <div className="header-menu-info">
                   Signed in as<br />
-                  <span style={{ color: 'var(--text-primary)', fontSize: '0.75rem' }}>{user.email}</span><br />
-                  <span style={{ color: isAdmin ? '#a78bfa' : 'var(--text-muted)', fontSize: '0.65rem' }}>
+                  <span style={{ color:'var(--text-primary)', fontSize:'0.75rem',
+                    wordBreak:'break-all' }}>{user.email}</span><br />
+                  <span style={{ color: isAdmin ? '#a78bfa' : 'var(--text-muted)' }}>
                     {isAdmin ? '⚙ Administrator' : '● User'}
                   </span>
                 </div>
                 {isAdmin && (
-                  <button onClick={() => { setShowUserMenu(false); setActiveTab('admin'); }}
-                    style={{ width: '100%', padding: '0.65rem 1rem', background: 'none', border: 'none',
-                      color: '#a78bfa', cursor: 'pointer', textAlign: 'left',
-                      fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>
+                  <button className="header-menu-btn admin"
+                    onClick={() => { setShowUserMenu(false); setActiveTab('admin'); }}>
                     ⚙ Admin Panel
                   </button>
                 )}
-                <button onClick={() => { setShowUserMenu(false); logout(); }}
-                  style={{ width: '100%', padding: '0.65rem 1rem', background: 'none', border: 'none',
-                    color: 'var(--danger)', cursor: 'pointer', textAlign: 'left',
-                    fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>
+                <button className="header-menu-btn danger"
+                  onClick={() => { setShowUserMenu(false); logout(); }}>
                   ⎋ Sign Out
                 </button>
               </div>
@@ -332,24 +478,35 @@ function MainApp() {
         </div>
       </header>
 
-      <nav className="nav-container">
-        <div className="nav-tabs">
+      {/* ── Nav ── */}
+      <nav className="nav-container" aria-label="Main navigation">
+        <div className="nav-tabs" role="tablist">
           {TABS.map(tab => (
-            <button key={tab.id}
+            <button
+              key={tab.id}
+              role="tab"
+              aria-selected={activeTab === tab.id}
               className={`nav-tab ${activeTab === tab.id ? 'active' : ''}`}
-              style={tab.id === 'admin' ? { color: activeTab === 'admin' ? '#a78bfa' : 'var(--text-muted)',
-                borderBottomColor: activeTab === 'admin' ? '#a78bfa' : 'transparent' } : {}}
-              onClick={() => setActiveTab(tab.id)}>
+              style={tab.id === 'admin' ? {
+                color: activeTab === 'admin' ? '#a78bfa' : 'var(--text-muted)',
+                borderBottomColor: activeTab === 'admin' ? '#a78bfa' : 'transparent',
+              } : {}}
+              onClick={() => setActiveTab(tab.id)}
+            >
               <span className="tab-num">{tab.num}</span>
-              <span>{tab.icon}</span>
+              <span aria-hidden="true">{tab.icon}</span>
               <span>{tab.label}</span>
             </button>
           ))}
         </div>
       </nav>
 
-      <main className="main-content">{renderPage()}</main>
+      {/* ── Content ── */}
+      <main className="main-content" role="main">
+        {renderPage()}
+      </main>
 
+      {/* ── Footer ── */}
       <footer className="app-footer">
         EmailTools Pro · {user.email} · {isAdmin ? 'Administrator' : 'User'}
       </footer>
